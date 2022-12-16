@@ -6,7 +6,7 @@ public class addonJogodaveia {
     public static void main(String[] args) {
         String[][] jogoDaVelha = new String[3][3];
         int vezJogador=0;
-        int i,j;
+        int i=0,j=0;
         String coluna="",linha="";
         boolean[][] X = new boolean[3][3], O = new boolean[3][3];
         int contadorJogadas=0;
@@ -15,47 +15,53 @@ public class addonJogodaveia {
             for(j=0;j<3;j++){
                 X[i][j] = true;
                 O[i][j] = true;
-                jogoDaVelha[i][j]= "{  }";
+                jogoDaVelha[i][j]= " (  ) ";
             }
         }
 
         JOptionPane.showMessageDialog(null,"O JOGO COMEÇOU");
 
-        while(verificaX(X)==false & verificaX(O)==false & contadorJogadas<9){
-
-            i = i(coluna);
-            j = j(linha);
-            if(i>=0 && i<=2 & j>=0 && j<=2){
-                contadorJogadas++;
-                if(vezJogador%2==0){
-                    if(X[i][j] == false || O[i][j] == false){
-                        JOptionPane.showMessageDialog(null,"Jogada invalida");
+        do{
+            coluna = JOptionPane.showInputDialog("Coluna: ");
+            linha = JOptionPane.showInputDialog("Linha: ");
+            if(coluna==null || linha==null){
+                JOptionPane.showMessageDialog(null,"Jogo cancelado");
+            }
+            else{
+                i = Integer.parseInt(coluna);
+                j = Integer.parseInt(linha);
+                if(i>=0 && i<=2 & j>=0 && j<=2){
+                    contadorJogadas++;
+                    if(vezJogador%2==0){
+                        if(X[i][j] == false || O[i][j] == false){
+                            JOptionPane.showMessageDialog(null,"Jogada invalida");
+                        }
+                        else{
+                            vezJogador++;
+                            jogoDaVelha[i][j] = " (x) ";
+                            X[i][j] = false;
+                            imprimi(jogoDaVelha);
+                        }
                     }
                     else{
-                        vezJogador++;
-                        jogoDaVelha[i][j] = "{x}";
-                        X[i][j] = false;
-                        imprimi(jogoDaVelha);
+                        if(X[i][j] == false || O[i][j] == false){
+                            JOptionPane.showMessageDialog(null,"Jogada invalida");
+                        }
+                        else{
+                            vezJogador++;
+                            jogoDaVelha[i][j] = " (O) ";
+                            O[i][j] = false;
+                            imprimi(jogoDaVelha);
+
+                        }
+                            
                     }
                 }
                 else{
-                    if(X[i][j] == false || O[i][j] == false){
-                        JOptionPane.showMessageDialog(null,"Jogada invalida");
-                    }
-                    else{
-                        vezJogador++;
-                        jogoDaVelha[i][j] = "{O}";
-                        O[i][j] = false;
-                        imprimi(jogoDaVelha);
-
-                    }
-                        
+                    JOptionPane.showMessageDialog(null,"Jogada invalida");
                 }
             }
-            else{
-                JOptionPane.showMessageDialog(null,"Jogada invalida");
-            }
-        }
+        }while(verificaX(X)==false & verificaX(O)==false & contadorJogadas<9 & coluna!=null & linha != null);
 
         if(verificaX(X) == true){
             JOptionPane.showMessageDialog(null,"Jogador 'X' venceu");
@@ -63,23 +69,13 @@ public class addonJogodaveia {
         else if(verificaX(O) == true){
             JOptionPane.showMessageDialog(null,"Jogador 'O' venceu");
         }
-        else{
+        else if(coluna!=null || linha!=null){
             JOptionPane.showMessageDialog(null,"Velha");
         }
     }
 
-    public static int i(String coluna){
-        coluna = JOptionPane.showInputDialog("Coluna: ");
-        return Integer.parseInt(coluna);
-    }
-
-    public static int j(String linha){
-        linha = JOptionPane.showInputDialog("Linha: ");
-        return Integer.parseInt(linha);
-    }
-
     public static void imprimi(String[][] jogoDaVelha){ 
-        JOptionPane.showMessageDialog(null,"      0    1    2\n 0 "+jogoDaVelha[0][0]+jogoDaVelha[1][0]+jogoDaVelha[2][0]+"\n 1 "+jogoDaVelha[0][1]+jogoDaVelha[1][1]+jogoDaVelha[2][1]+"\n 2 "+jogoDaVelha[0][2]+jogoDaVelha[1][2]+jogoDaVelha[2][2]+"\n");
+        JOptionPane.showMessageDialog(null,"      0     1     2\n 0 "+jogoDaVelha[0][0]+jogoDaVelha[1][0]+jogoDaVelha[2][0]+"\n 1 "+jogoDaVelha[0][1]+jogoDaVelha[1][1]+jogoDaVelha[2][1]+"\n 2 "+jogoDaVelha[0][2]+jogoDaVelha[1][2]+jogoDaVelha[2][2]+"\n");
     }
     
     public static boolean verificaX(boolean[][] X){
